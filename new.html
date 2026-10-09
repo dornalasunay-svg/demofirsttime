@@ -3,12 +3,438 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>t1</title>
+    <meta name="description" content="A visual HTML workshop reference with common tags, examples, and page features.">
+    <title>HTML Field Guide | Workshop Reference</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #202d2d;
+            --muted: #667575;
+            --paper: #f7f7f1;
+            --panel: #fffefa;
+            --line: #d9dfd9;
+            --green: #176b56;
+            --coral: #bd4d3b;
+            --code: #172827;
+            --lime: #d7ed9d;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            color: var(--ink);
+            background-color: var(--paper);
+            background-image: radial-gradient(#dce3d8 0.7px, transparent 0.7px);
+            background-size: 18px 18px;
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 1.6;
+        }
+        a { color: var(--green); }
+        a:hover { color: var(--coral); }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem max(1.25rem, calc((100% - 1180px) / 2));
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 254, 250, 0.92);
+            font-family: "Trebuchet MS", Arial, sans-serif;
+        }
+        .brand { font-weight: 800; letter-spacing: 0.04em; text-decoration: none; }
+        .brand span { color: var(--coral); }
+        .topbar a { font-size: 0.85rem; font-weight: 700; text-decoration: none; }
+        .hero { max-width: 1180px; margin: 0 auto; padding: clamp(2.5rem, 7vw, 5.5rem) 1.25rem 3rem; }
+        .eyebrow, .section-label, .index, .tag, button, input, select, textarea, table, summary { font-family: "Trebuchet MS", Arial, sans-serif; }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 0 1rem;
+            color: var(--green);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .eyebrow::before { width: 1.5rem; height: 2px; background: var(--coral); content: ""; }
+        h1, h2, h3, p { margin-top: 0; }
+        h1 { max-width: 780px; margin-bottom: 1rem; font-size: clamp(2.7rem, 7vw, 5.6rem); line-height: 0.98; }
+        h1 em { color: var(--green); font-weight: 400; }
+        .intro { max-width: 660px; margin-bottom: 1.5rem; color: var(--muted); font-size: 1.15rem; }
+        .hero-meta { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+        .tag { padding: 0.35rem 0.65rem; border: 1px solid var(--line); border-radius: 3px; background: var(--panel); font-size: 0.76rem; }
+        .layout {
+            display: grid;
+            grid-template-columns: 210px minmax(0, 1fr);
+            gap: 2rem;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 1.25rem 5rem;
+            align-items: start;
+        }
+        .toc {
+            position: sticky;
+            top: 1rem;
+            padding: 1rem 0;
+            border-top: 2px solid var(--ink);
+            font-family: "Trebuchet MS", Arial, sans-serif;
+        }
+        .toc h2 { margin-bottom: 0.75rem; font-size: 0.77rem; letter-spacing: 0.08em; text-transform: uppercase; }
+        .toc ol { margin: 0; padding: 0; list-style: none; }
+        .toc li + li { margin-top: 0.25rem; }
+        .toc a { display: block; padding: 0.35rem 0; color: var(--muted); font-size: 0.85rem; text-decoration: none; }
+        .toc a:hover { color: var(--green); }
+        main { min-width: 0; }
+        .guide-section { padding: 1.6rem 0 2rem; border-top: 1px solid var(--line); scroll-margin-top: 1rem; }
+        .section-heading { display: flex; gap: 1rem; align-items: baseline; margin-bottom: 1.2rem; }
+        .index { color: var(--coral); font-size: 0.78rem; font-weight: 800; }
+        .section-heading h2 { margin: 0; font-size: 1.7rem; line-height: 1.2; }
+        .section-label { margin-bottom: 0.5rem; color: var(--muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+        .example-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
+        .example { min-width: 0; padding: 1rem; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); }
+        .example.wide { grid-column: 1 / -1; }
+        .preview { min-height: 2.5rem; margin-bottom: 0.85rem; }
+        .preview > :last-child { margin-bottom: 0; }
+        .preview h1, .preview h2, .preview h3 { margin-bottom: 0.4rem; }
+        .preview h1 { font-size: 2rem; }
+        .preview h2 { font-size: 1.55rem; }
+        .preview h3 { font-size: 1.2rem; }
+        pre { overflow-x: auto; margin: 0; padding: 0.8rem; border-radius: 3px; background: var(--code); color: #e5f1dd; font: 0.78rem/1.6 "SFMono-Regular", Consolas, monospace; tab-size: 2; }
+        code { font-family: "SFMono-Regular", Consolas, monospace; }
+        .inline-code { padding: 0.1rem 0.3rem; border-radius: 2px; background: #e9eee3; color: #284a3e; font-size: 0.88em; }
+        blockquote { margin: 0; padding: 0.2rem 0 0.2rem 1rem; border-left: 3px solid var(--lime); color: var(--muted); font-style: italic; }
+        ul, ol { padding-left: 1.3rem; }
+        dl { margin: 0; }
+        dt { font-weight: 700; }
+        dd { margin: 0 0 0.5rem 1rem; color: var(--muted); }
+        hr { border: 0; border-top: 1px solid var(--line); }
+        mark { padding: 0.05rem 0.2rem; background: var(--lime); }
+        figure { margin: 0; }
+        figure img { display: block; width: 100%; max-height: 250px; object-fit: cover; border-radius: 3px; }
+        figcaption { margin-top: 0.45rem; color: var(--muted); font-family: "Trebuchet MS", Arial, sans-serif; font-size: 0.75rem; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+        th, td { padding: 0.55rem; border: 1px solid var(--line); text-align: left; }
+        th { background: #edf2e8; }
+        form { display: grid; gap: 0.75rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        label { display: grid; gap: 0.25rem; font-size: 0.8rem; font-weight: 700; }
+        input, select, textarea { width: 100%; padding: 0.55rem; border: 1px solid #bfc9c0; border-radius: 3px; background: #fff; color: var(--ink); font-size: 0.9rem; }
+        input[type="checkbox"], input[type="radio"] { width: auto; accent-color: var(--green); }
+        .choice { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .choice label { display: flex; align-items: center; gap: 0.4rem; }
+        button { justify-self: start; padding: 0.55rem 0.8rem; border: 0; border-radius: 3px; background: var(--green); color: white; font-weight: 700; cursor: pointer; }
+        button:hover { background: #0f503f; }
+        details { border: 1px solid var(--line); border-radius: 3px; background: var(--panel); }
+        summary { padding: 0.7rem; color: var(--green); font-weight: 700; cursor: pointer; }
+        details p { padding: 0 0.7rem 0.7rem; margin: 0; }
+        progress, meter { width: 100%; height: 1.1rem; accent-color: var(--green); }
+        .closing-note { padding: 1rem; border-left: 4px solid var(--coral); background: #fffefa; }
+        footer { padding: 1.5rem max(1.25rem, calc((100% - 1180px) / 2)); border-top: 1px solid var(--line); color: var(--muted); font-family: "Trebuchet MS", Arial, sans-serif; font-size: 0.8rem; }
+        @media (max-width: 760px) {
+            .layout { grid-template-columns: 1fr; gap: 0.5rem; }
+            .toc { position: static; padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
+            .toc ol { display: flex; flex-wrap: wrap; gap: 0 0.9rem; }
+            .toc li + li { margin: 0; }
+        }
+        @media (max-width: 520px) {
+            .example-grid, .form-row { grid-template-columns: 1fr; }
+            .example.wide { grid-column: auto; }
+            .section-heading h2 { font-size: 1.45rem; }
+            .topbar { align-items: flex-start; }
+        }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    </style>
 </head>
-<title>heading program</title>
 <body>
-    <p>para 1</p>
-    <p>para 2</p>
-  
+    <header>
+        <nav class="topbar" aria-label="Main navigation">
+            <a class="brand" href="#top">HTML<span>/</span>FIELD GUIDE</a>
+            <a href="#reference">Jump to the tags <span aria-hidden="true">↓</span></a>
+        </nav>
+        <div class="hero" id="top">
+            <p class="eyebrow">Workshop desk reference · 01</p>
+            <h1>HTML, from <em>structure</em> to interaction.</h1>
+            <p class="intro">A hands-on index of the everyday elements that turn plain text into a real web page. Read the example, then compare it with the markup underneath.</p>
+            <div class="hero-meta" aria-label="Topics covered">
+                <span class="tag">Document structure</span>
+                <span class="tag">Text &amp; links</span>
+                <span class="tag">Media &amp; tables</span>
+                <span class="tag">Forms &amp; controls</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout" id="reference">
+        <nav class="toc" aria-label="On this page">
+            <h2>On this page</h2>
+            <ol>
+                <li><a href="#structure">01 · Structure</a></li>
+                <li><a href="#text">02 · Text</a></li>
+                <li><a href="#links-media">03 · Links &amp; media</a></li>
+                <li><a href="#lists">04 · Lists</a></li>
+                <li><a href="#tables">05 · Tables</a></li>
+                <li><a href="#forms">06 · Forms</a></li>
+                <li><a href="#interactive">07 · Interactive</a></li>
+            </ol>
+        </nav>
+
+        <main>
+            <section class="guide-section" id="structure" aria-labelledby="structure-title">
+                <div class="section-heading"><span class="index">01</span><h2 id="structure-title">The page skeleton</h2></div>
+                <p class="section-label">A browser-friendly document starts with these pieces</p>
+                <div class="example-grid">
+                    <article class="example wide">
+                        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;My page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header&gt;...&lt;/header&gt;
+    &lt;main&gt;...&lt;/main&gt;
+    &lt;footer&gt;...&lt;/footer&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Semantic landmarks</p>
+                        <div class="preview"><strong>header</strong> · site intro<br><strong>nav</strong> · navigation links<br><strong>main</strong> · primary content<br><strong>section</strong> · grouped topic<br><strong>article</strong> · standalone item<br><strong>footer</strong> · closing details</div>
+                        <pre><code>&lt;header&gt;...&lt;/header&gt;
+&lt;nav aria-label="Main"&gt;...&lt;/nav&gt;
+&lt;main&gt;
+  &lt;section&gt;
+    &lt;article&gt;...&lt;/article&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+&lt;footer&gt;...&lt;/footer&gt;</code></pre>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Headings</p>
+                        <div class="preview"><h1>Heading one</h1><h2>Heading two</h2><h3>Heading three</h3></div>
+                        <pre><code>&lt;h1&gt;Page title&lt;/h1&gt;
+&lt;h2&gt;Section title&lt;/h2&gt;
+&lt;h3&gt;Smaller heading&lt;/h3&gt;</code></pre>
+                    </article>
+                </div>
+            </section>
+
+            <section class="guide-section" id="text" aria-labelledby="text-title">
+                <div class="section-heading"><span class="index">02</span><h2 id="text-title">Text &amp; meaning</h2></div>
+                <p class="section-label">Give content the right structure, not just the right look</p>
+                <div class="example-grid">
+                    <article class="example">
+                        <p class="section-label">Paragraph and line break</p>
+                        <div class="preview"><p>A paragraph groups related sentences into a readable block.</p><p>Use a line break when a new line matters, like an address:<br>14 Market Street<br>Brooklyn, NY</p></div>
+                        <pre><code>&lt;p&gt;A paragraph of text.&lt;/p&gt;
+&lt;p&gt;14 Market Street&lt;br&gt;Brooklyn, NY&lt;/p&gt;</code></pre>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Inline emphasis</p>
+                        <div class="preview"><p><strong>Important</strong> information, <em>emphasized</em> words, <mark>highlighted</mark> text, and <small>fine print</small>.</p><p>Water is H<sub>2</sub>O; two squared is 2<sup>2</sup>.</p></div>
+                        <pre><code>&lt;strong&gt;Important&lt;/strong&gt;
+&lt;em&gt;Emphasized&lt;/em&gt;
+&lt;mark&gt;Highlighted&lt;/mark&gt;
+&lt;small&gt;Fine print&lt;/small&gt;
+H&lt;sub&gt;2&lt;/sub&gt;O · 2&lt;sup&gt;2&lt;/sup&gt;</code></pre>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Quote and citation</p>
+                        <div class="preview"><blockquote>Great things are done by a series of small things brought together.<br><cite>Vincent van Gogh</cite></blockquote></div>
+                        <pre><code>&lt;blockquote&gt;
+  Great things are done...
+  &lt;cite&gt;Vincent van Gogh&lt;/cite&gt;
+&lt;/blockquote&gt;</code></pre>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Code and separator</p>
+                        <div class="preview"><p>Use <code class="inline-code">&lt;code&gt;</code> for a short code fragment.</p><hr><p>A thematic break uses <code class="inline-code">&lt;hr&gt;</code>.</p></div>
+                        <pre><code>&lt;p&gt;Run &lt;code&gt;npm test&lt;/code&gt;.&lt;/p&gt;
+&lt;hr&gt;</code></pre>
+                    </article>
+                </div>
+            </section>
+
+            <section class="guide-section" id="links-media" aria-labelledby="links-title">
+                <div class="section-heading"><span class="index">03</span><h2 id="links-title">Links &amp; media</h2></div>
+                <p class="section-label">Connect pages and bring in images with useful alternative text</p>
+                <div class="example-grid">
+                    <article class="example">
+                        <p class="section-label">Link</p>
+                        <div class="preview"><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noreferrer">Read the HTML guide at MDN ↗</a></div>
+                        <pre><code>&lt;a href="https://example.com"&gt;
+  Visit the site
+&lt;/a&gt;</code></pre>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Image with caption</p>
+                        <div class="preview">
+                            <figure>
+                                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Laptop displaying code on a desk">
+                                <figcaption>A figure groups an image with its caption.</figcaption>
+                            </figure>
+                        </div>
+                        <pre><code>&lt;figure&gt;
+  &lt;img src="desk.jpg" alt="Laptop displaying code"&gt;
+  &lt;figcaption&gt;A caption.&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Audio &amp; video</p>
+                        <div class="preview"><audio controls aria-label="Audio example"></audio><p><small>Media controls appear when a source is provided.</small></p></div>
+                        <pre><code>&lt;audio controls src="sound.mp3"&gt;
+  Your browser does not support audio.
+&lt;/audio&gt;
+
+&lt;video controls width="320" poster="preview.jpg"&gt;
+  &lt;source src="clip.mp4" type="video/mp4"&gt;
+&lt;/video&gt;</code></pre>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Email and phone links</p>
+                        <div class="preview"><a href="mailto:hello@example.com">hello@example.com</a><br><a href="tel:+15550101234">+1 555 010 1234</a></div>
+                        <pre><code>&lt;a href="mailto:hello@example.com"&gt;Email&lt;/a&gt;
+&lt;a href="tel:+15550101234"&gt;Call&lt;/a&gt;</code></pre>
+                    </article>
+                </div>
+            </section>
+
+            <section class="guide-section" id="lists" aria-labelledby="lists-title">
+                <div class="section-heading"><span class="index">04</span><h2 id="lists-title">Lists</h2></div>
+                <p class="section-label">Choose bullets, sequence, or term-and-definition pairs</p>
+                <div class="example-grid">
+                    <article class="example">
+                        <p class="section-label">Unordered list</p>
+                        <div class="preview"><ul><li>Apples</li><li>Oats</li><li>Tea</li></ul></div>
+                        <pre><code>&lt;ul&gt;
+  &lt;li&gt;Apples&lt;/li&gt;
+  &lt;li&gt;Oats&lt;/li&gt;
+  &lt;li&gt;Tea&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Ordered list</p>
+                        <div class="preview"><ol><li>Preheat the oven</li><li>Mix ingredients</li><li>Bake until golden</li></ol></div>
+                        <pre><code>&lt;ol&gt;
+  &lt;li&gt;Preheat the oven&lt;/li&gt;
+  &lt;li&gt;Mix ingredients&lt;/li&gt;
+  &lt;li&gt;Bake until golden&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+                    </article>
+                    <article class="example wide">
+                        <p class="section-label">Description list</p>
+                        <div class="preview"><dl><dt>HTML</dt><dd>Structures the content of a web page.</dd><dt>CSS</dt><dd>Styles how that content looks.</dd></dl></div>
+                        <pre><code>&lt;dl&gt;
+  &lt;dt&gt;HTML&lt;/dt&gt;
+  &lt;dd&gt;Structures a web page.&lt;/dd&gt;
+  &lt;dt&gt;CSS&lt;/dt&gt;
+  &lt;dd&gt;Styles a web page.&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+                    </article>
+                </div>
+            </section>
+
+            <section class="guide-section" id="tables" aria-labelledby="tables-title">
+                <div class="section-heading"><span class="index">05</span><h2 id="tables-title">Tables</h2></div>
+                <p class="section-label">Use tables for data that belongs in rows and columns</p>
+                <article class="example">
+                    <div class="preview">
+                        <table>
+                            <caption>Workshop timetable</caption>
+                            <thead><tr><th scope="col">Time</th><th scope="col">Topic</th><th scope="col">Room</th></tr></thead>
+                            <tbody><tr><td>09:00</td><td>HTML foundations</td><td>Studio A</td></tr><tr><td>10:30</td><td>Forms &amp; input</td><td>Studio B</td></tr></tbody>
+                        </table>
+                    </div>
+                    <pre><code>&lt;table&gt;
+  &lt;caption&gt;Workshop timetable&lt;/caption&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;&lt;th scope="col"&gt;Time&lt;/th&gt;...&lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;&lt;td&gt;09:00&lt;/td&gt;...&lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+                </article>
+            </section>
+
+            <section class="guide-section" id="forms" aria-labelledby="forms-title">
+                <div class="section-heading"><span class="index">06</span><h2 id="forms-title">Forms &amp; inputs</h2></div>
+                <p class="section-label">Labels connect instructions to controls; types give the browser helpful context</p>
+                <div class="example-grid">
+                    <article class="example">
+                        <p class="section-label">Try the controls</p>
+                        <div class="preview">
+                            <form action="#forms" method="get">
+                                <div class="form-row">
+                                    <label for="visitor-name">Name<input id="visitor-name" name="name" type="text" placeholder="Ada Lovelace"></label>
+                                    <label for="visitor-email">Email<input id="visitor-email" name="email" type="email" placeholder="ada@example.com"></label>
+                                </div>
+                                <label for="topic">Workshop topic
+                                    <select id="topic" name="topic"><option>HTML basics</option><option>Forms</option><option>Accessibility</option></select>
+                                </label>
+                                <label for="message">A note<textarea id="message" name="message" rows="3" placeholder="Write a short message..."></textarea></label>
+                                <div class="choice"><label><input type="checkbox" name="updates"> Send me updates</label><label><input type="radio" name="level" value="beginner" checked> Beginner</label></div>
+                                <button type="submit">Submit example</button>
+                            </form>
+                        </div>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Common input types</p>
+                        <pre><code>&lt;input type="text"&gt;
+&lt;input type="email"&gt;
+&lt;input type="password"&gt;
+&lt;input type="number"&gt;
+&lt;input type="date"&gt;
+&lt;input type="file"&gt;
+&lt;input type="checkbox"&gt;
+&lt;input type="radio"&gt;
+&lt;input type="color"&gt;
+&lt;input type="range"&gt;
+&lt;textarea&gt;&lt;/textarea&gt;
+&lt;select&gt;...&lt;/select&gt;
+&lt;button type="submit"&gt;Send&lt;/button&gt;</code></pre>
+                    </article>
+                </div>
+            </section>
+
+            <section class="guide-section" id="interactive" aria-labelledby="interactive-title">
+                <div class="section-heading"><span class="index">07</span><h2 id="interactive-title">Interactive &amp; status</h2></div>
+                <p class="section-label">A few useful browser-native controls, no JavaScript required</p>
+                <div class="example-grid">
+                    <article class="example">
+                        <p class="section-label">Expandable disclosure</p>
+                        <div class="preview"><details><summary>What does HTML stand for?</summary><p>HyperText Markup Language: the standard markup language for documents designed to be displayed in a web browser.</p></details></div>
+                        <pre><code>&lt;details&gt;
+  &lt;summary&gt;Show the answer&lt;/summary&gt;
+  &lt;p&gt;The content is revealed here.&lt;/p&gt;
+&lt;/details&gt;</code></pre>
+                    </article>
+                    <article class="example">
+                        <p class="section-label">Progress and meter</p>
+                        <div class="preview"><label for="lesson-progress">Workshop progress</label><progress id="lesson-progress" value="6" max="10">60%</progress><p>Coverage: <meter min="0" max="100" low="30" high="80" optimum="90" value="72">72%</meter></p></div>
+                        <pre><code>&lt;progress value="6" max="10"&gt;60%&lt;/progress&gt;
+&lt;meter min="0" max="100" value="72"&gt;
+  72%
+&lt;/meter&gt;</code></pre>
+                    </article>
+                    <article class="example wide">
+                        <p class="section-label">Abbreviation and contact details</p>
+                        <div class="preview"><p><abbr title="HyperText Markup Language">HTML</abbr> is the language of this page.</p><address>Workshop team · <a href="mailto:hello@example.com">hello@example.com</a></address></div>
+                        <pre><code>&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt;
+&lt;address&gt;Workshop team · hello@example.com&lt;/address&gt;</code></pre>
+                    </article>
+                </div>
+            </section>
+
+            <p class="closing-note"><strong>Quick rule:</strong> choose an element for what the content means. Use CSS for how it looks, and add JavaScript when the page needs behavior beyond native browser controls.</p>
+        </main>
+    </div>
+
+    <footer>
+        <p>HTML Field Guide · A practical workshop companion · <a href="#top">Back to top ↑</a></p>
+    </footer>
 </body>
 </html>
